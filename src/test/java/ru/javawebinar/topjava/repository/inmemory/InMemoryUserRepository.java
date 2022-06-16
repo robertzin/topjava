@@ -11,8 +11,13 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryUserRepository extends InMemoryBaseRepository<User> implements UserRepository {
 
-    static final int USER_ID = 1;
-    static final int ADMIN_ID = 2;
+    public void init() {
+        map.clear();
+        put(user);
+        put(admin);
+        put(guest);
+        counter.getAndSet(UserTestData.GUEST_ID + 1);
+    }
 
     @Override
     public List<User> getAll() {

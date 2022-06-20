@@ -35,13 +35,12 @@ public class JdbcMealRepository implements MealRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
-            .withTableName("meals")
-            .usingGeneratedKeyColumns("id");
+                .withTableName("meals")
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
-
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("user_id", userId)

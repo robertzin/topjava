@@ -1,10 +1,10 @@
 package ru.javawebinar.topjava.service.dataJpa;
 
 import org.springframework.test.context.ActiveProfiles;
-import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.service.AbstractUserServiceTest;
 
 import static ru.javawebinar.topjava.Profiles.DATAJPA;
 
 @ActiveProfiles(DATAJPA)
-public class DataJpaUserServiceTest extends UserServiceTest {
+public class DataJpaUserServiceTest extends AbstractUserServiceTest {
 }

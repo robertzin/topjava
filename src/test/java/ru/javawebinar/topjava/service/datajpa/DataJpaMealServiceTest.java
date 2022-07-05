@@ -13,7 +13,6 @@ import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.Profiles.DATAJPA;
 import static ru.javawebinar.topjava.UserTestData.USER_MATCHER;
-import static ru.javawebinar.topjava.UserTestData.user;
 
 @ActiveProfiles(DATAJPA)
 public class DataJpaMealServiceTest extends AbstractMealServiceTest {
@@ -29,11 +28,11 @@ public class DataJpaMealServiceTest extends AbstractMealServiceTest {
 
     @Test
     public void getWithUserNotFoundId() {
-        assertThrows(NotFoundException.class, () -> service.getWithUser(NOT_FOUND, user.id()));
+        assertThrows(NotFoundException.class, () -> service.getWithUser(NOT_FOUND, UserTestData.USER_ID));
     }
 
     @Test
     public void getWithUserNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.getWithUser(meal1.getId(), NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.getWithUser(MEAL1_ID, UserTestData.NOT_FOUND));
     }
 }

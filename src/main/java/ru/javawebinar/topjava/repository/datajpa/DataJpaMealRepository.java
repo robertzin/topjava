@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class DataJpaMealRepository implements MealRepository {
     private final CrudMealRepository mealRepository;
     private final CrudUserRepository userRepository;
 
-    public DataJpaMealRepository(CrudMealRepository mealRepository, CrudUserRepository userRepository, EntityManager em) {
+    public DataJpaMealRepository(CrudMealRepository mealRepository, CrudUserRepository userRepository) {
         this.mealRepository = mealRepository;
         this.userRepository = userRepository;
     }
@@ -35,9 +34,7 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-        return mealRepository.findById(id)
-                .filter(m -> m.getUser().getId() == userId)
-                .orElse(null);
+        return mealRepository.get(id, userId);
     }
 
     @Override

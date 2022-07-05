@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.service.dataJpa;
+package ru.javawebinar.topjava.service.datajpa;
 
 import org.junit.Test;
 import org.springframework.test.context.ActiveProfiles;

@@ -25,31 +25,33 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 @RequestMapping(value = "/meals")
 public class JspMealController extends AbstractMealController {
 
+    @GetMapping("/save")
+    public String save(Model model) {
+        log.info("save meal");
+        Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
+        model.addAttribute("meal", meal);
+        return "mealForm";
+    }
+
     @GetMapping("/get")
-    public String getMeal(HttpServletRequest request, Model model) {
-        Meal meal;
+    public String get(HttpServletRequest request, Model model) {
+        log.info("get meal");
         String id = request.getParameter("id");
-        if (!StringUtils.hasLength(id)) {
-            meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
-        } else {
-            meal = service.get(Integer.parseInt(id), SecurityUtil.authUserId());
-        }
+        Meal meal = service.get(Integer.parseInt(id), SecurityUtil.authUserId());
         model.addAttribute("meal", meal);
         return "mealForm";
     }
 
     @GetMapping
-    public String getMeals(Model model) {
-        log.info("meals");
+    public String getAll(Model model) {
+        log.info("get all");
         model.addAttribute("meals",
-                MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()),
-                        SecurityUtil.authUserCaloriesPerDay()));
+                MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
         return "meals";
     }
 
     @PostMapping
-    public String createUpdateMeal(HttpServletRequest request) {
-        log.info("create meal");
+    public String createUpdate(HttpServletRequest request) {
         final Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
@@ -57,15 +59,17 @@ public class JspMealController extends AbstractMealController {
         int userId = SecurityUtil.authUserId();
         if (StringUtils.hasLength(id)) {
             meal.setId(Integer.parseInt(id));
+            log.info("update meal");
             service.update(meal, userId);
         } else {
+            log.info("create meal");
             service.create(meal, userId);
         }
         return "redirect:/meals";
     }
 
     @GetMapping("/delete")
-    public String deleteMeal(HttpServletRequest request) {
+    public String delete(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         log.info("delete meal {}", id);
         service.delete(id, SecurityUtil.authUserId());
@@ -73,7 +77,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @GetMapping("/filter")
-    public String filterMeals(HttpServletRequest request, Model model) {
+    public String filter(HttpServletRequest request, Model model) {
         log.info("filter meals");
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
@@ -81,9 +85,9 @@ public class JspMealController extends AbstractMealController {
         LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
         int userId = SecurityUtil.authUserId();
         log.info("get meals between {} and {} from {} to {} for user {}", startDate, endDate, startTime, endDate, userId);
-        List<Meal> unsortedMeals = service.getBetweenInclusive(startDate, endDate, userId);
-        List<MealTo> meals = MealsUtil.getFilteredTos(unsortedMeals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
-        model.addAttribute("meals", meals);
+        List<Meal> meals = service.getBetweenInclusive(startDate, endDate, userId);
+        List<MealTo> sortedMeals = MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+        model.addAttribute("meals", sortedMeals);
         return "meals";
     }
 }

@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
@@ -7,14 +6,11 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="${pageContext.request.contextPath}"><spring:message code="app.home"/></a></h3>
     <hr>
-    <c:set var="create"><spring:message code="meal.add"/></c:set>
-    <c:set var="update"><spring:message code="meal.update"/></c:set>
-    <h2>${meal.isNew() ? create : update}</h2>
+    <h2><spring:message code="${meal.isNew() ? 'meal.add' : 'meal.update'}"/></h2>
 
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action=${pageContext.request.contextPath}/meals>
+    <form method="post" action=meals>
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meal.date"/></dt>

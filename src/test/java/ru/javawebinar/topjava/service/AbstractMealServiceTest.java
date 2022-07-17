@@ -12,7 +12,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 
 import static java.time.LocalDateTime.of;
 import static org.junit.Assert.assertThrows;
@@ -23,15 +22,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Autowired
-    Environment env;
-
-    @Autowired
     protected MealService service;
-
-    private boolean isJdbc() {
-        String[] profiles = env.getActiveProfiles();
-        return Arrays.asList(profiles).contains("jdbc");
-    }
 
     @Test
     public void delete() {

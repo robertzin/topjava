@@ -4,10 +4,6 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
-<head>
-    <title><spring:message code="meal.title"/></title>
-    <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
-</head>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>

@@ -4,9 +4,7 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MealTo {
-
-    private final Integer id;
+public class MealTo extends BaseTo {
 
     private final LocalDateTime dateTime;
 
